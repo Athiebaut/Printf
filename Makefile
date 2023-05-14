@@ -1,12 +1,12 @@
-SRCS :	ft_putchar_fd.c ft_putstr_fd.c ft_putnbr_fd.c \
-	ft_putptr_fd.c
+SRCS =	ft_print_int_signed.c ft_printf.c \
+	ft_print_int_unsigned.c
 
-OBJS : ${SRCS:.c=.o}
-NAME : libftprintf.a
-LIBC : ar -rcs
-CC : cc 
-RM : rm -f
-FLAGS : -Wall -Werror -Wextra 
+OBJS = ${SRCS:.c=.o}
+NAME = libftprintf.a
+LIBC = ar -rcs
+CC = cc 
+RM = rm -f
+FLAGS = -Wall -Werror -Wextra 
 
 .c.o:
 	${CC} ${FLAGS} -c $< -o${<:.c=.o}
