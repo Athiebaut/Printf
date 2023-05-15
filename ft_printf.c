@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: athiebau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/15 11:51:10 by athiebau          #+#    #+#             */
+/*   Updated: 2023/05/15 11:51:13 by athiebau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_printf.h"
 
@@ -12,7 +23,12 @@ int	ft_putstr(char *str)
 	int	i;
 
 	i = 0;
-	while(str[i])
+	if (str == NULL)
+	{
+		i = i + write(1, "(null)", 6);
+		return (6);
+	}
+	while (str[i])
 	{
 		ft_putchar(str[i]);
 		i++;
@@ -36,14 +52,17 @@ static int	ft_convert(va_list list, const char arg)
 	else if (arg == '%')
 		printed = printed + ft_putchar('%');
 	else if (arg == 'p')
-		printed = printed + ft_print_ptr(va_arg(list, void *));
+		printed = printed + ft_print_ptr(va_arg(list, uintptr_t));
+	else if ((arg == 'x') || (arg == 'X'))
+		printed = printed + ft_print_hexadecimal(va_arg(list,
+					unsigned int), arg);
 	return (printed);
 }
 
 int	ft_printf(const char *arg, ...)
 {
-	int	printed;
-	int	i;
+	int		printed;
+	int		i;
 	va_list	list;
 
 	printed = 0;
@@ -64,8 +83,10 @@ int	ft_printf(const char *arg, ...)
 	return (printed);
 }
 
-int main()
+/*int main()
 {
-	ft_printf("%%");
+	//char *oui = NULL;
+	printf("%x\n", 54568);
+	ft_printf("%x", 54568);
 	return 0;
-}
+}*/

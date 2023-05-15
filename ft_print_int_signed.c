@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_print_int_signed.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: athiebau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/15 11:51:28 by athiebau          #+#    #+#             */
+/*   Updated: 2023/05/15 11:51:31 by athiebau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_printf.h"
 
@@ -55,7 +66,7 @@ static char	*ft_itoa(int n)
 int	ft_print_int_signed(int nb)
 {
 	char	*num;
-	int	size;
+	int		size;
 
 	num = ft_itoa(nb);
 	size = ft_putstr(num);

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putptr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_print_hexadecimal.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: athiebau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/12 13:48:34 by athiebau          #+#    #+#             */
-/*   Updated: 2023/05/12 13:51:22 by athiebau         ###   ########.fr       */
+/*   Created: 2023/05/15 11:51:20 by athiebau          #+#    #+#             */
+/*   Updated: 2023/05/15 11:51:22 by athiebau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static int	ptr_size(uintptr_t nb)
+static int	number_size(unsigned int nb)
 {
 	int	size;
 
@@ -25,34 +25,34 @@ static int	ptr_size(uintptr_t nb)
 	return (size);
 }
 
-static void	ft_put_ptr(uintptr_t nb)
+static void	ft_put_hex(unsigned int nb, const char arg)
 {
 	if (nb >= 16)
 	{
-		ft_put_ptr(nb / 16);
-		ft_put_ptr(nb % 16);
+		ft_put_hex(nb / 16, arg);
+		ft_put_hex(nb % 16, arg);
 	}
-	else
+	else if (arg == 'x')
 	{
 		if (nb <= 9)
 			ft_putchar(nb + '0');
 		else
 			ft_putchar(nb - 10 + 'a');
 	}
+	else if (arg == 'X')
+	{
+		if (nb <= 9)
+			ft_putchar(nb + '0');
+		else
+			ft_putchar(nb - 10 + 'A');
+	}
 }
 
-int	ft_print_ptr(uintptr_t ptr)
+int	ft_print_hexadecimal(unsigned int nb, const char arg)
 {
-	int	printed;
-
-	printed = 0;
-	if (ptr == 0)
-		printed = printed + ft_putstr("(nil)");
+	if (nb == 0)
+		return (write(1, "0", 1));
 	else
-	{
-		printed = printed + write(1, "0x", 2);
-		ft_put_ptr(ptr);
-		printed = printed + ptr_size(ptr);
-	}
-	return (printed);
+		ft_put_hex(nb, arg);
+	return (number_size(nb));
 }
