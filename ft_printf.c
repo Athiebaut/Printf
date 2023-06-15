@@ -67,6 +67,8 @@ int	ft_printf(const char *arg, ...)
 
 	printed = 0;
 	i = 0;
+	if (!arg)
+		return (-1);
 	va_start (list, arg);
 	while (arg[i])
 	{
@@ -82,11 +84,3 @@ int	ft_printf(const char *arg, ...)
 	va_end(list);
 	return (printed);
 }
-
-/*int main()
-{
-	//char *oui = NULL;
-	printf("%x\n", 54568);
-	ft_printf("%x", 54568);
-	return 0;
-}*/
