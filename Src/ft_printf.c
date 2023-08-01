@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: athiebau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: alix <alix@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 11:51:10 by athiebau          #+#    #+#             */
-/*   Updated: 2023/05/15 11:51:13 by athiebau         ###   ########.fr       */
+/*   Updated: 2023/08/01 18:49:26 by alix             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../Inc/ft_printf.h"
 
-int	ft_putchar(int c)
+int	ft_put_char(int c)
 {
 	write(1, &c, 1);
 	return (1);
 }
 
-int	ft_putstr(char *str)
+int	ft_put_str(char *str)
 {
 	int	i;
 
@@ -30,7 +30,7 @@ int	ft_putstr(char *str)
 	}
 	while (str[i])
 	{
-		ft_putchar(str[i]);
+		ft_put_char(str[i]);
 		i++;
 	}
 	return (i);
@@ -42,15 +42,15 @@ static int	ft_convert(va_list list, const char arg)
 
 	printed = 0;
 	if (arg == 'c')
-		printed = printed + ft_putchar(va_arg(list, int));
+		printed = printed + ft_put_char(va_arg(list, int));
 	else if (arg == 's')
-		printed = printed + ft_putstr(va_arg(list, char *));
+		printed = printed + ft_put_str(va_arg(list, char *));
 	else if ((arg == 'd') || (arg == 'i'))
 		printed = printed + ft_print_int_signed(va_arg(list, int));
 	else if (arg == 'u')
 		printed = printed + ft_print_int_unsigned(va_arg(list, unsigned int));
 	else if (arg == '%')
-		printed = printed + ft_putchar('%');
+		printed = printed + ft_put_char('%');
 	else if (arg == 'p')
 		printed = printed + ft_print_ptr(va_arg(list, uintptr_t));
 	else if ((arg == 'x') || (arg == 'X'))
@@ -78,7 +78,7 @@ int	ft_printf(const char *arg, ...)
 			i++;
 		}
 		else
-			printed = printed + ft_putchar(arg[i]);
+			printed = printed + ft_put_char(arg[i]);
 		i++;
 	}
 	va_end(list);

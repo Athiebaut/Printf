@@ -1,18 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print_int_unsigned.c                            :+:      :+:    :+:   */
+/*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alix <alix@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: athiebau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/15 11:51:47 by athiebau          #+#    #+#             */
-/*   Updated: 2023/08/01 18:48:29 by alix             ###   ########.fr       */
+/*   Created: 2023/05/04 17:35:37 by athiebau          #+#    #+#             */
+/*   Updated: 2023/05/04 19:11:05 by athiebau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Inc/ft_printf.h"
+#include "libft.h"
 
-static int	str_size(unsigned int nb)
+static char	*ft_char(char *str, unsigned int nb, long int size)
+{
+	while (nb > 0)
+	{
+		str[size] = 48 + (nb % 10);
+		nb = nb / 10;
+		size--;
+	}
+	return (str);
+}
+
+static long int	str_size(int nb)
 {
 	int	size;
 
@@ -27,10 +38,11 @@ static int	str_size(unsigned int nb)
 	return (size);
 }
 
-static char	*ft_itoa(unsigned int n)
+char	*ft_itoa(int n)
 {
 	char			*str;
 	long int		size;
+	unsigned int	nb;
 
 	size = str_size(n);
 	str = (char *)malloc(sizeof(char) * (size + 1));
@@ -40,25 +52,13 @@ static char	*ft_itoa(unsigned int n)
 	size = size - 1;
 	if (n == 0)
 		str[0] = '0';
-	else
+	if (n < 0)
 	{
-		while (n > 0)
-		{
-			str[size] = 48 + (n % 10);
-			n = n / 10;
-			size--;
-		}
+		nb = n * -1;
+		str[0] = '-';
 	}
+	else
+		nb = n;
+	str = ft_char(str, nb, size);
 	return (str);
-}
-
-int	ft_print_int_unsigned(unsigned int nb)
-{
-	char	*num;
-	int		size;
-
-	num = ft_itoa(nb);
-	size = ft_put_str(num);
-	free(num);
-	return (size);
 }

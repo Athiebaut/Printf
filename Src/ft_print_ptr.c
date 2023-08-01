@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putptr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_print_ptr.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: athiebau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: alix <alix@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 13:48:34 by athiebau          #+#    #+#             */
-/*   Updated: 2023/05/12 13:51:22 by athiebau         ###   ########.fr       */
+/*   Updated: 2023/08/01 18:49:37 by alix             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../Inc/ft_printf.h"
 
 static int	ptr_size(uintptr_t nb)
 {
@@ -35,9 +35,9 @@ static void	ft_put_ptr(uintptr_t nb)
 	else
 	{
 		if (nb <= 9)
-			ft_putchar(nb + '0');
+			ft_put_char(nb + '0');
 		else
-			ft_putchar(nb - 10 + 'a');
+			ft_put_char(nb - 10 + 'a');
 	}
 }
 
@@ -47,7 +47,7 @@ int	ft_print_ptr(uintptr_t ptr)
 
 	printed = 0;
 	if (ptr == 0)
-		printed = printed + ft_putstr("(nil)");
+		printed = printed + ft_put_str("(nil)");
 	else
 	{
 		printed = printed + write(1, "0x", 2);

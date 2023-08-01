@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_int_signed.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: athiebau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: alix <alix@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 11:51:28 by athiebau          #+#    #+#             */
-/*   Updated: 2023/05/15 11:51:31 by athiebau         ###   ########.fr       */
+/*   Updated: 2023/08/01 18:48:21 by alix             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../Inc/ft_printf.h"
 
 static char	*ft_char(char *str, unsigned int nb, long int size)
 {
@@ -69,7 +69,7 @@ int	ft_print_int_signed(int nb)
 	int		size;
 
 	num = ft_itoa(nb);
-	size = ft_putstr(num);
+	size = ft_put_str(num);
 	free(num);
 	return (size);
 }

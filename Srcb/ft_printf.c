@@ -6,7 +6,7 @@
 /*   By: alix <alix@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 11:51:10 by athiebau          #+#    #+#             */
-/*   Updated: 2023/08/01 18:07:48 by alix             ###   ########.fr       */
+/*   Updated: 2023/08/01 18:47:08 by alix             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ static int	ft_convert(va_list list, const char arg)
 
 	printed = 0;
 	if (arg == 'c')
-		printed = printed + ft_putchar(va_arg(list, int));
+		printed = printed + ft_put_char(va_arg(list, int));
 	else if (arg == 's')
-		printed = printed + ft_putstr(va_arg(list, char *));
+		printed = printed + ft_put_str(va_arg(list, char *));
 	else if ((arg == 'd') || (arg == 'i'))
 		printed = printed + ft_print_int_signed(va_arg(list, int));
 	else if (arg == 'u')
@@ -92,10 +92,8 @@ int	ft_printf(const char *arg, ...)
 			}
 		}
 		else
-			printed = printed + ft_putchar(arg[i]);
-		i++;	
+		{}
 	}
-	va_end(list->args);
-	free(list);
+	va_end(args);
 	return (printed);
 }

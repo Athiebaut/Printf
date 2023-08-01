@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_hexadecimal.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: athiebau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: alix <alix@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 11:51:20 by athiebau          #+#    #+#             */
-/*   Updated: 2023/05/15 11:51:22 by athiebau         ###   ########.fr       */
+/*   Updated: 2023/08/01 18:48:05 by alix             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../Inc/ft_printf.h"
 
 static int	number_size(unsigned int nb)
 {
@@ -35,16 +35,16 @@ static void	ft_put_hex(unsigned int nb, const char arg)
 	else if (arg == 'x')
 	{
 		if (nb <= 9)
-			ft_putchar(nb + '0');
+			ft_put_char(nb + '0');
 		else
-			ft_putchar(nb - 10 + 'a');
+			ft_put_char(nb - 10 + 'a');
 	}
 	else if (arg == 'X')
 	{
 		if (nb <= 9)
-			ft_putchar(nb + '0');
+			ft_put_char(nb + '0');
 		else
-			ft_putchar(nb - 10 + 'A');
+			ft_put_char(nb - 10 + 'A');
 	}
 }
 

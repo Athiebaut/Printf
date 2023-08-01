@@ -6,7 +6,7 @@
 /*   By: alix <alix@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 11:51:38 by athiebau          #+#    #+#             */
-/*   Updated: 2023/08/01 18:06:10 by alix             ###   ########.fr       */
+/*   Updated: 2023/08/01 18:54:30 by alix             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <stdint.h>
 # include <stdio.h>
+# include "../Libft/libft.h"
 
 typedef struct s_print                       
 {                        
@@ -31,6 +32,8 @@ typedef struct s_print
       int   plus;            
       int   sign;                        
 }    t_print;
+
+# define SPECIFIERS      "cspdiuxX%"
 
 int	ft_print_int_signed(int nb);
 int	ft_print_int_unsigned(unsigned int nb);

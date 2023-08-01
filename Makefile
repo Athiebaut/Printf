@@ -1,7 +1,8 @@
-SRCS =	ft_print_int_signed.c ft_printf.c \
+SRC =	ft_print_int_signed.c ft_printf.c \
 	ft_print_int_unsigned.c ft_print_ptr.c \
 	ft_print_hexadecimal.c
 
+SRCS = ${addprefix Src/, ${SRC}}
 OBJS = ${SRCS:.c=.o}
 NAME = libftprintf.a
 LIBC = ar -rcs
