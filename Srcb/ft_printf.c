@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: athiebau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: alix <alix@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 11:51:10 by athiebau          #+#    #+#             */
-/*   Updated: 2023/05/15 11:51:13 by athiebau         ###   ########.fr       */
+/*   Updated: 2023/08/01 18:07:48 by alix             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../Inc/ft_printf_bonus.h"
+
+void	ft_initialize(t_print *list)
+{
+	char  specifier = 0;
+	int   width = 0;
+	int   precision = 0;
+	int   minus = 0;
+	int   zero = 0;
+	int   dot = 0;
+	int   sharp = 0;
+	int   space = 0;
+	int   plus = 0;
+	int   sign = 0;
+}
 
 int	ft_putchar(int c)
 {
@@ -62,30 +76,26 @@ static int	ft_convert(va_list list, const char arg)
 int	ft_printf(const char *arg, ...)
 {
 	int		printed;
-	int		i;
-	t_print	*list;
+	va_list		args;
 
 	printed = 0;
-	i = 0;
 	if (!arg)
 		return (-1);
-	list = (t_print *)malloc(sizeof(t_print));
-	if (!list)
-		return (-1);
-	ft_initialize(list);
-	va_start (list->args, arg);
-	while(arg[i])
+	va_start (args, arg);
+	while(*arg)
 	{
-		if(arg[i] == '%')
-			
+		if (*arg == '%')
+		{
+			if (*(++arg))
+			{
+				printed = ft_parse((char *)arg, args);
+			}
+		}
+		else
+			printed = printed + ft_putchar(arg[i]);
+		i++;	
 	}
 	va_end(list->args);
 	free(list);
 	return (printed);
-}
-
-int main()
-{
-	int i = 42;
-	ft_printf("%i\n%c\n%x\n%p", i, 'a', i);
 }

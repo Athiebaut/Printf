@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_printf_bonus.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: athiebau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: alix <alix@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 11:51:38 by athiebau          #+#    #+#             */
-/*   Updated: 2023/05/15 11:51:40 by athiebau         ###   ########.fr       */
+/*   Updated: 2023/08/01 18:06:10 by alix             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,16 @@
 
 typedef struct s_print                       
 {                        
-      va_list  args;    // arg to print out                    
-      int   wdt;        // width                
-      int   prc;        // precision              
-      int   zero;       // zero padding               
-      int   point;        // .     
-      int   dash;       // -               
-      int   tl;         // total_length (return value)              
-      int   sign;       // pos or neg number               
-      int   is_zero;    // is number zero                 
-      int   perc;       // %               
-      int   sp;         // space flag ' '            
+      char  specifier;              
+      int   width;            
+      int   precision;
+      int   minus;           
+      int   zero;         
+      int   dot;
+      int   sharp; 
+      int   space;            
+      int   plus;            
+      int   sign;                        
 }    t_print;
 
 int	ft_print_int_signed(int nb);
