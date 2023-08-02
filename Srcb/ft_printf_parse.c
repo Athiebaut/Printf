@@ -6,7 +6,7 @@
 /*   By: alix <alix@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:22:38 by alix              #+#    #+#             */
-/*   Updated: 2023/08/01 18:58:58 by alix             ###   ########.fr       */
+/*   Updated: 2023/08/02 01:56:12 by alix             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,16 @@ t_print	get_width(char *arg, va_list args, t_print *list)
 	{
 		if (*arg == '-')
 			list->minus = 1;
-		if(*arg == '0' && !ft_isdigit())
+		if(*arg == '0' && !ft_isdigit(*(arg -1)))
+			list->zero = 1;
+		else if (((*arg >= '0' && *arg <= '9') || *arg = '*') && !specifier)
+		{
+			if (*arg == '*')
+				list->width = va_arg(args, int);
+			else
+				list->width = ft_atoi(arg);
+			specifier = 1;
+		}
 	}
 }
 
