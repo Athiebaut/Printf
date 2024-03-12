@@ -6,42 +6,54 @@
 /*   By: alix <alix@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 11:51:38 by athiebau          #+#    #+#             */
-/*   Updated: 2023/08/01 18:54:30 by alix             ###   ########.fr       */
+/*   Updated: 2024/03/12 03:09:29 by alix             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
+# define SPECIFIERS      "cspdiuxX%"
+
+/*-------------------------------------------*/
+/*                     LIB                   */
+/*-------------------------------------------*/
+
 # include <unistd.h>
 # include <stdarg.h>
 # include <stdlib.h>
 # include <stdint.h>
 # include <stdio.h>
+# include <stdbool.h> 
 # include "../Libft/libft.h"
+
+/*-------------------------------------------*/
+/*                 STRUCTURE                 */
+/*-------------------------------------------*/
 
 typedef struct s_print                       
 {                        
-      char  specifier;              
-      int   width;            
-      int   precision;
-      int   minus;           
-      int   zero;         
+      char  specifier;
+      int   minus;
+      int   zero;
+      int   width;
+      int   plus;
+      int   space;
+      int   sharp;
       int   dot;
-      int   sharp; 
-      int   space;            
-      int   plus;            
-      int   sign;                        
+      int   precision;
+      bool  sign;                        
 }    t_print;
 
-# define SPECIFIERS      "cspdiuxX%"
+/*-------------------------------------------*/
+/*                    FILES                  */
+/*-------------------------------------------*/
 
-int	ft_print_int_signed(int nb);
-int	ft_print_int_unsigned(unsigned int nb);
-int	ft_putstr(char *str);
-int	ft_putchar(int c);
-int	ft_printf(const char *arg, ...);
-int	ft_print_ptr(uintptr_t ptr);
-int	ft_print_hexadecimal(unsigned int nb, const char arg);
+int	ft_parse(char *arg, va_list args);
 
-void	ft_initialize(t_print *list);
+int	ft_convert(va_list args, t_print list);
+
+int	ft_putnchar(char c, int size);
+int	ft_print_str(t_print list, va_list ap);
+int	ft_print_char(t_print list, va_list ap);
+
 #endif
