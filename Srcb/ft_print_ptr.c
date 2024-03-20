@@ -1,58 +1,63 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putptr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_print_ptr.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: athiebau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: alix <alix@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 13:48:34 by athiebau          #+#    #+#             */
-/*   Updated: 2023/05/12 13:51:22 by athiebau         ###   ########.fr       */
+/*   Updated: 2024/03/20 23:55:28 by alix             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../Inc/ft_printf_bonus.h"
 
-static int	ptr_size(uintptr_t nb)
+int	ft_recursive_hex(t_print list, size_t n, size_t iteration)
 {
-	int	size;
+	int		count;
+	int		i;
+	char	c;
 
-	size = 0;
-	while (nb != 0)
+	count = 0;
+	if (n > 0 || (!iteration && (list.specifier != 'p' || !list.dot)))
 	{
-		size++;
-		nb = nb / 16;
-	}
-	return (size);
-}
-
-static void	ft_put_ptr(uintptr_t nb)
-{
-	if (nb >= 16)
-	{
-		ft_put_ptr(nb / 16);
-		ft_put_ptr(nb % 16);
-	}
-	else
-	{
-		if (nb <= 9)
-			ft_putchar(nb + '0');
+		i = n % 16;
+		if (list.specifier != 'X')
+			c = HEXA_LOW[i];
 		else
-			ft_putchar(nb - 10 + 'a');
+			c = HEXA_UP[i];
+		n /= 16;
+		iteration = 1;
+		count += ft_recursive_hex(list, n, iteration);
+		count += ft_putnchar(c, 1);
 	}
+	return (count);
 }
 
-int	ft_print_ptr(uintptr_t ptr)
+int	ft_print_ptr(t_print list, va_list args)
 {
-	int	printed;
+	int		count;
+	size_t	n;
+	int		len;
 
-	printed = 0;
-	if (ptr == 0)
-		printed = printed + ft_putstr("(nil)");
-	else
-	{
-		printed = printed + write(1, "0x", 2);
-		ft_put_ptr(ptr);
-		printed = printed + ptr_size(ptr);
-	}
-	return (printed);
+	count = 0;
+	n = va_arg(args, size_t);
+	len = ft_nbrlen(n, 16);
+	len *= !(!n && !list.precision && list.dot);
+	if (list.precision < len || !list.dot)
+		list.precision = len;
+	count += write(1, "0x", 2 * list.zero);
+	list.width -= 2;
+	if (!list.minus && list.width > list.precision && !list.dot && list.zero)
+		count += ft_putnchar('0', (list.width - list.precision));
+	else if (!list.minus && list.width > list.precision)
+		count += ft_putnchar(' ', (list.width - list.precision));
+	count += write(1, "0x", 2 * !list.zero);
+	count += ft_putnchar('0', (list.precision - len) * (n != 0));
+	count += ft_putnchar('0', list.precision * (list.dot && !n));
+	if (len)
+		count += ft_recursive_hex(list, n, n);
+	if (list.minus && list.width > list.precision)
+		count += ft_putnchar(' ', list.width - list.precision);
+	return (count);
 }

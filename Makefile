@@ -1,38 +1,38 @@
-SRC =	ft_print_int_signed.c ft_printf.c \
-	ft_print_int_unsigned.c ft_print_ptr.c \
-	ft_print_hexadecimal.c
-SRCB =	ft_printf_bonus.c ft_printf_parse_bonus.c \
-	ft_print_char_bonus.c
-SRCS = ${addprefix Src/, ${SRC}}
-SRCSB = ${addprefix Srcb/, ${SRCB}}
+SRC =	ft_printf.c \
+	ft_print_parse.c \
+	ft_print_char.c \
+	ft_print_str.c \
+	ft_print_nbrs.c \
+	ft_print_ptr.c \
+	ft_print_hexa.c
+
+SRCS = ${addprefix Srcb/, ${SRC}}
 OBJS = ${SRCS:.c=.o}
-OBJSB = ${SRCSB:.c=.o}
 NAME = libftprintf.a
-NAMEB = libftprintf_bonus.a
-LIBC = ar -rcs
+LIBC = ar rcs
 CC = cc 
 RM = rm -f
-FLAGS = -Wall -Werror -Wextra 
+FLAGS = -Wall -Werror -Wextra -g3
 
 .c.o:
 	${CC} ${FLAGS} -c $< -o${<:.c=.o}
 
 ${NAME}: ${OBJS}
-	${LIBC} ${NAME} ${OBJS}	
+	make -C Libft
+	${LIBC} ${NAME} Libft/*.o ${OBJS} 
 
 all: ${NAME}
-
-bonus: ${OBJSB}
-	${LIBC} ${NAMEB} ${OBJSB}	
-
+	
 
 clean: 
 	${RM} ${OBJS}
 	${RM} ${OBJSB}
+	make clean -C Libft
 
 fclean: clean
 	${RM} ${NAME}
 	${RM} ${NAMEB}
+	make fclean -C Libft
 
 re: fclean all
 

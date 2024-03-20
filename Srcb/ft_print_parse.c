@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_parse_bonus.c                            :+:      :+:    :+:   */
+/*   ft_print_parse.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alix <alix@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:22:38 by alix              #+#    #+#             */
-/*   Updated: 2024/03/12 02:56:54 by alix             ###   ########.fr       */
+/*   Updated: 2024/03/20 23:13:30 by alix             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	ft_parse(char *arg, va_list args)
 	if (!list.specifier && *arg == '.')
 	{
 		list.dot = 1;
-		get_precision(arg, args, &list);
+		get_precision(arg++, args, &list);
 		while (!ft_strchr(SPECIFIERS, *arg))
 			arg++;
 	}
