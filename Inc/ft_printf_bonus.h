@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_bonus.h                                  :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alix <alix@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: athiebau <athiebau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 11:51:38 by athiebau          #+#    #+#             */
-/*   Updated: 2024/03/21 00:04:23 by alix             ###   ########.fr       */
+/*   Updated: 2024/03/21 03:22:02 by athiebau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,19 @@
 /*                 STRUCTURE                 */
 /*-------------------------------------------*/
 
-typedef struct s_print                       
-{                        
-      char  specifier;
-      int   minus;
-      int   zero;
-      int   width;
-      int   plus;
-      int   space;
-      int   sharp;
-      int   dot;
-      int   precision;
-      bool  sign;                        
-}    t_print;
+typedef struct s_print
+{
+	char	specifier;
+	int		minus;
+	int		zero;
+	int		width;
+	int		plus;
+	int		space;
+	int		sharp;
+	int		dot;
+	int		precision;
+	bool	sign;
+}	t_print;
 
 /*-------------------------------------------*/
 /*                    FILES                  */

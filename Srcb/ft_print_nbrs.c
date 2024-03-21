@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_nbrs.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alix <alix@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: athiebau <athiebau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 11:51:28 by athiebau          #+#    #+#             */
-/*   Updated: 2024/03/20 21:17:40 by alix             ###   ########.fr       */
+/*   Updated: 2024/03/21 04:48:57 by athiebau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Inc/ft_printf_bonus.h"
+
+// static int	ft_strlen2(char *str)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	if (str[i] == '+' || str[i] == '-')
+// 		str++;
+// 	while(str[i])
+// 		i++;
+// 	return (i);
+// }
 
 static char	plus(t_print list)
 {
@@ -29,7 +41,8 @@ static int	ft_print_nbr(t_print list, char *nbr, int len, int neg)
 		c += ft_putnchar(plus(list), list.zero && (!list.dot || list.sign));
 	else if (list.space)
 		c += ft_putnchar(' ', list.zero && !list.dot);
-	if (!list.minus && list.width > list.precision && (!list.dot || list.sign) && list.zero)
+	if (!list.minus && list.width > list.precision && (!list.dot || list.sign)
+		&& list.zero)
 		c += ft_putnchar('0', list.width - list.precision - neg - list.plus);
 	else if (!list.minus && list.width > list.precision)
 		c += ft_putnchar(' ', list.width - list.precision - neg - list.plus);
@@ -46,21 +59,21 @@ static int	ft_print_nbr(t_print list, char *nbr, int len, int neg)
 
 int	ft_print_d_i_u(t_print list, va_list ap)
 {
-	char	*nbr;
-	int		n;
-	int		c;
-	int		len;
-	int		neg;
+	char		*nbr;
+	long long	n;
+	int			c;
+	int			len;
+	int			neg;
 
 	c = 0;
 	n = va_arg(ap, int);
-	neg = (n < 0 && n != INT_MIN && list.specifier != 'u');
+	neg = (n < 0 && n >= INT_MIN && list.specifier != 'u');
 	if (neg)
 		list.plus = 0;
 	if (n < 0 && list.specifier != 'u')
 		n *= -1;
 	if (n < 0 && list.specifier == 'u')
-		nbr = ft_uitoa((unsigned)n);
+		nbr = ft_uitoa(n);
 	else
 		nbr = ft_itoa(n);
 	len = ft_strlen(nbr);

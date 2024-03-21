@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_ptr.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alix <alix@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: athiebau <athiebau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 13:48:34 by athiebau          #+#    #+#             */
-/*   Updated: 2024/03/20 23:55:28 by alix             ###   ########.fr       */
+/*   Updated: 2024/03/21 04:48:57 by athiebau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,30 +34,49 @@ int	ft_recursive_hex(t_print list, size_t n, size_t iteration)
 	return (count);
 }
 
-int	ft_print_ptr(t_print list, va_list args)
+static void	if_n_equal_zero(t_print list, int *count)
 {
-	int		count;
-	size_t	n;
-	int		len;
+	if (!list.precision)
+		list.precision = 5;
+	if (!list.minus && list.width > list.precision)
+		*count += ft_putnchar(' ', list.width - list.precision);
+	*count += ft_putnstr("(nil)", 5);
+}
+
+static void	ft_print_ptr_bis(t_print l, int *count, int len, uintptr_t n)
+{
+	if (!l.minus && l.width > l.precision && !l.dot && l.zero)
+		*count += ft_putnchar('0', (l.width - l.precision));
+	else if (!l.minus && l.width > l.precision)
+		*count += ft_putnchar(' ', (l.width - l.precision));
+	*count += write(1, "0x", 2 * !l.zero);
+	*count += ft_putnchar('0', (l.precision - len) * (n != 0));
+	*count += ft_putnchar('0', l.precision * (l.dot && !n));
+	if (len)
+		*count += ft_recursive_hex(l, n, n);
+	if (l.minus && l.width > *count && l.width > l.precision)
+		*count += ft_putnchar(' ', l.width - l.precision);
+}
+
+int	ft_print_ptr(t_print l, va_list args)
+{
+	int			count;
+	uintptr_t	n;
+	int			len;
 
 	count = 0;
 	n = va_arg(args, size_t);
-	len = ft_nbrlen(n, 16);
-	len *= !(!n && !list.precision && list.dot);
-	if (list.precision < len || !list.dot)
-		list.precision = len;
-	count += write(1, "0x", 2 * list.zero);
-	list.width -= 2;
-	if (!list.minus && list.width > list.precision && !list.dot && list.zero)
-		count += ft_putnchar('0', (list.width - list.precision));
-	else if (!list.minus && list.width > list.precision)
-		count += ft_putnchar(' ', (list.width - list.precision));
-	count += write(1, "0x", 2 * !list.zero);
-	count += ft_putnchar('0', (list.precision - len) * (n != 0));
-	count += ft_putnchar('0', list.precision * (list.dot && !n));
-	if (len)
-		count += ft_recursive_hex(list, n, n);
-	if (list.minus && list.width > list.precision)
-		count += ft_putnchar(' ', list.width - list.precision);
+	if (n == 0)
+		if_n_equal_zero(l, &count);
+	else
+	{	
+		len = ft_nbrlen(n, 16);
+		len *= !(!n && !l.precision && l.dot);
+		if (l.precision < len || !l.dot)
+			l.precision = len;
+		count += write(1, "0x", 2 * l.zero);
+		l.width -= 2;
+		ft_print_ptr_bis(l, &count, len, n);
+	}
 	return (count);
 }

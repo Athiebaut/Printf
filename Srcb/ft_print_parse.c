@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_parse.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alix <alix@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: athiebau <athiebau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:22:38 by alix              #+#    #+#             */
-/*   Updated: 2024/03/20 23:13:30 by alix             ###   ########.fr       */
+/*   Updated: 2024/03/21 04:48:57 by athiebau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	get_width(char *arg, va_list args, t_print *list)
 	{
 		if (*arg == '-')
 			list->minus = 1;
-		if(*arg == '0' && !ft_isdigit(*(arg - 1)))
+		if (*arg == '0' && !ft_isdigit(*(arg - 1)))
 			list->zero = 1;
 		else if (((*arg >= '0' && *arg <= '9') || *arg == '*') && !size)
 		{
@@ -70,7 +70,7 @@ static void	get_precision(char *arg, va_list args, t_print *list)
 	size = 0;
 	while (!ft_strchr(SPECIFIERS, *arg))
 	{
-		if((*arg == '*' || ft_isdigit(*arg)) && !size)
+		if ((*arg == '*' || ft_isdigit(*arg)) && !size)
 		{
 			if (*arg == '*')
 				list->precision = va_arg(args, int);
@@ -89,7 +89,7 @@ int	ft_parse(char *arg, va_list args)
 	ft_initialize(&list);
 	get_width(arg, args, &list);
 	get_flags(arg, &list);
-	while(*arg != '.' && !ft_strchr(SPECIFIERS, *arg))
+	while (*arg != '.' && !ft_strchr(SPECIFIERS, *arg))
 		arg++;
 	if (!list.specifier && *arg == '.')
 	{
@@ -107,4 +107,3 @@ int	ft_parse(char *arg, va_list args)
 	list.sign = list.precision < 0;
 	return (ft_convert(args, list));
 }
-

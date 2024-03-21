@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: athiebau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: athiebau <athiebau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 17:35:37 by athiebau          #+#    #+#             */
-/*   Updated: 2023/05/04 19:11:05 by athiebau         ###   ########.fr       */
+/*   Updated: 2024/03/21 02:55:23 by athiebau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char	*ft_char(char *str, unsigned int nb, long int size)
+static char	*ft_char(char *str, long long nb, long int size)
 {
 	while (nb > 0)
 	{
@@ -23,7 +23,7 @@ static char	*ft_char(char *str, unsigned int nb, long int size)
 	return (str);
 }
 
-static long int	str_size(int nb)
+static long int	str_size(long long nb)
 {
 	int	size;
 
@@ -38,11 +38,10 @@ static long int	str_size(int nb)
 	return (size);
 }
 
-char	*ft_itoa(int n)
+char	*ft_itoa(long long n)
 {
 	char			*str;
 	long int		size;
-	unsigned int	nb;
 
 	size = str_size(n);
 	str = (char *)malloc(sizeof(char) * (size + 1));
@@ -52,13 +51,6 @@ char	*ft_itoa(int n)
 	size = size - 1;
 	if (n == 0)
 		str[0] = '0';
-	if (n < 0)
-	{
-		nb = n * -1;
-		str[0] = '-';
-	}
-	else
-		nb = n;
-	str = ft_char(str, nb, size);
+	str = ft_char(str, n, size);
 	return (str);
 }
