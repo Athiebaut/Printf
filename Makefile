@@ -12,7 +12,7 @@ NAME = libftprintf.a
 LIBC = ar rcs
 CC = cc 
 RM = rm -f
-FLAGS = -Wall -Werror -Wextra -g3
+FLAGS = -Wall -Werror -Wextra
 
 .c.o:
 	${CC} ${FLAGS} -c $< -o${<:.c=.o}
