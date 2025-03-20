@@ -12,6 +12,16 @@
 
 #include "../Inc/ft_printf.h"
 
+/**
+ * @brief Calculates the number of digits required to represent an unsigned integer.
+ *
+ * This function determines the size (number of digits) of an unsigned integer
+ * when represented in base 10. If the input number is 0, the size is considered
+ * to be 1, as a single digit is required to represent 0.
+ *
+ * @param nb The unsigned integer whose size is to be calculated.
+ * @return The number of digits required to represent the input number in base 10.
+ */
 static int	str_size(unsigned int nb)
 {
 	int	size;
@@ -27,6 +37,20 @@ static int	str_size(unsigned int nb)
 	return (size);
 }
 
+/**
+ * @brief Converts an unsigned integer to a null-terminated string.
+ *
+ * This function takes an unsigned integer as input and converts it into
+ * a dynamically allocated string representation of the number. The caller
+ * is responsible for freeing the allocated memory.
+ *
+ * @param n The unsigned integer to be converted.
+ * @return A pointer to the dynamically allocated string representing the
+ *         number, or NULL if memory allocation fails.
+ *
+ * @note The returned string is null-terminated.
+ * @note If the input number is 0, the function returns a string containing "0".
+ */
 static char	*ft_itoa(unsigned int n)
 {
 	char			*str;
@@ -52,6 +76,17 @@ static char	*ft_itoa(unsigned int n)
 	return (str);
 }
 
+/**
+ * ft_print_int_unsigned - Prints an unsigned integer to the standard output.
+ * 
+ * @nb: The unsigned integer to be printed.
+ * 
+ * This function converts the given unsigned integer to a string using `ft_itoa`,
+ * prints the string using `ft_put_str`, and then frees the allocated memory for
+ * the string. It returns the number of characters printed.
+ * 
+ * Return: The number of characters printed.
+ */
 int	ft_print_int_unsigned(unsigned int nb)
 {
 	char	*num;
