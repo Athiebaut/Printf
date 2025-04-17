@@ -3,152 +3,141 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alix <alix@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: athiebau <athiebau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 11:51:10 by athiebau          #+#    #+#             */
-/*   Updated: 2023/08/01 18:49:26 by alix             ###   ########.fr       */
+/*   Updated: 2024/03/24 17:27:37 by athiebau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Inc/ft_printf.h"
 
-/**
- * ft_put_char - Writes a single character to the standard output.
- *
- * @c: The character to be written, passed as an integer.
- *
- * Return: Always returns 1, indicating that one character was written.
- *
- * Description:
- * This function uses the `write` system call to output a single character
- * to the standard output (file descriptor 1). It is a simple utility
- * function that can be used in custom implementations of formatted output
- * functions like printf.
- */
-int	ft_put_char(int c)
-{
-	write(1, &c, 1);
-	return (1);
-}
-
-/**
- * ft_put_str - Writes a string to the standard output.
- *
- * @str: The string to be written. If the string is NULL, the function
- *       writes "(null)" to the standard output.
- *
- * Return: The number of characters written to the standard output.
- *         If the string is NULL, it returns 6 (the length of "(null)").
- *
- * Note: This function uses ft_put_char to write individual characters
- *       of the string. Ensure that ft_put_char is implemented correctly.
- */
-int	ft_put_str(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (str == NULL)
-	{
-		i = i + write(1, "(null)", 6);
-		return (6);
-	}
-	while (str[i])
-	{
-		ft_put_char(str[i]);
-		i++;
-	}
-	return (i);
-}
-
-/**
- * @brief Converts and prints a value based on the specified format specifier.
- *
- * This function processes a format specifier and retrieves the corresponding
- * argument from the variable argument list. It then calls the appropriate
- * helper function to handle the printing of the value.
- *
- * @param list The variable argument list containing the values to be printed.
- * @param arg The format specifier indicating the type of value to print.
- *            Supported specifiers:
- *            - 'c': Prints a single character.
- *            - 's': Prints a null-terminated string.
- *            - 'd' or 'i': Prints a signed integer.
- *            - 'u': Prints an unsigned integer.
- *            - '%': Prints a literal '%' character.
- *            - 'p': Prints a pointer address.
- *            - 'x' or 'X': Prints an unsigned integer in hexadecimal format
- *              (lowercase for 'x', uppercase for 'X').
- *
- * @return The total number of characters printed.
- */
-static int	ft_convert(va_list list, const char arg)
+int	ft_convert(va_list args, t_print list)
 {
 	int	printed;
 
 	printed = 0;
-	if (arg == 'c')
-		printed = printed + ft_put_char(va_arg(list, int));
-	else if (arg == 's')
-		printed = printed + ft_put_str(va_arg(list, char *));
-	else if ((arg == 'd') || (arg == 'i'))
-		printed = printed + ft_print_int_signed(va_arg(list, int));
-	else if (arg == 'u')
-		printed = printed + ft_print_int_unsigned(va_arg(list, unsigned int));
-	else if (arg == '%')
-		printed = printed + ft_put_char('%');
-	else if (arg == 'p')
-		printed = printed + ft_print_ptr(va_arg(list, uintptr_t));
-	else if ((arg == 'x') || (arg == 'X'))
-		printed = printed + ft_print_hexadecimal(va_arg(list,
-					unsigned int), arg);
+	if (list.specifier == 'c' || list.specifier == '%')
+		printed += ft_print_char(list, args);
+	else if (list.specifier == 's')
+		printed += ft_print_str(list, args);
+	else if ((list.specifier == 'd') || (list.specifier == 'i'))
+		printed = printed + ft_print_d_i_u(list, args);
+	else if (list.specifier == 'u')
+		printed = printed + ft_print_d_i_u(list, args);
+	else if (list.specifier == 'p')
+		printed = printed + ft_print_ptr(list, args);
+	else if ((list.specifier == 'x') || (list.specifier == 'X'))
+		printed = printed + ft_print_hexa(list, args);
 	return (printed);
 }
 
-/**
- * ft_printf - A custom implementation of the printf function.
- *
- * @arg: The format string containing characters and format specifiers.
- *       Format specifiers are preceded by '%' and determine how the
- *       subsequent arguments are formatted and printed.
- * @...: A variable number of arguments to be formatted and printed
- *       according to the format specifiers in the format string.
- *
- * This function processes the format string character by character.
- * - If a '%' character is encountered, it processes the next character
- *   as a format specifier and calls the `ft_convert` function to handle
- *   the corresponding argument.
- * - If a regular character is encountered, it is printed directly using
- *   the `ft_put_char` function.
- *
- * Return: The total number of characters printed. If the format string
- *         is NULL, the function returns -1.
- *
- * Note: This function uses the `va_list` type and related macros to
- *       handle the variable number of arguments.
- */
 int	ft_printf(const char *arg, ...)
 {
 	int		printed;
-	int		i;
-	va_list	list;
+	va_list	args;
 
 	printed = 0;
-	i = 0;
 	if (!arg)
 		return (-1);
-	va_start (list, arg);
-	while (arg[i])
+	va_start (args, arg);
+	while (*arg)
 	{
-		if (arg[i] == '%')
+		if (*arg == '%')
 		{
-			printed = printed + ft_convert(list, arg[i + 1]);
-			i++;
+			if (*(++arg))
+				printed += ft_parse((char *)arg, args);
+			while (*arg && !ft_strchr(SPECIFIERS, *arg))
+				arg++;
 		}
 		else
-			printed = printed + ft_put_char(arg[i]);
-		i++;
+			printed += ft_putnchar(*arg, 1);
+		if (*arg)
+			arg++;
 	}
-	va_end(list);
+	va_end(args);
 	return (printed);
 }
+
+// int main()
+// {
+// 	char ch = 'A';
+// 	printf("char c :\n");
+// 	printf("-----------------------\n");
+// 	ft_printf("|%-6c|\n", ch);
+// 	printf("|%-6c|\n", ch);
+// 	ft_printf("|%4c|\n", ch);
+// 	printf("|%4c|\n", ch); 
+// 	printf("-----------------------\n");
+// 	char str[] = "Hello World";
+// 	printf("string s :\n");
+// 	printf("-----------------------\n");
+// 	ft_printf("|%s|\n", str);
+// 	printf("|%s|\n", str);
+// 	ft_printf("|%15s|\n", str);
+// 	printf("|%15s|\n", str);
+// 	ft_printf("|%-15s|\n", str);
+// 	printf("|%-15s|\n", str);
+// 	ft_printf("|%-15.3s|\n", str);
+// 	printf("|%-15.3s|\n", str);
+// 	ft_printf("|%15.3s|\n", str);
+// 	printf("|%15.3s|\n", str);
+// 	printf("-----------------------\n");
+
+// 	int *ptr = NULL;
+// 	char *str2 = "oui";
+// 	printf("pointeur p :\n");
+// 	printf("-----------------------\n");
+// 	ft_printf("|%p|\n", ptr);      
+// 	printf("|%p|\n", ptr); 
+// 	ft_printf("|%p|\n", str2);      
+// 	printf("|%p|\n", str2); 
+// 	ft_printf("|%20p|\n", str2);      
+// 	printf("|%20p|\n", str2); 
+// 	ft_printf("|%-20p|\n", str2);      
+// 	printf("|%-20p|\n", str2); 
+// 	printf("-----------------------\n");
+
+// 	int num = -424242;
+// 	printf("integer d/i :\n");
+// 	printf("-----------------------\n");
+// 	ft_printf("|%+d|\n", num);
+// 	printf("|%+d|\n", num);
+// 	ft_printf("|%+d|\n", -num);
+// 	printf("|%+d|\n", -num);
+// 	ft_printf("|%0+10d|\n", num);
+// 	printf("|%0+10d|\n", num);
+// 	ft_printf("|%-10i|\n", num);
+// 	printf("|%-10i|\n", num);
+// 	ft_printf("|%10i|\n", num);
+// 	printf("|%10i|\n", num);
+// 	printf("-----------------------\n");
+// 	unsigned int num2 = 123;
+// 	printf("unsigned integer u :\n");
+// 	printf("-----------------------\n");
+// 	ft_printf("|%u|\n", num2); 
+// 	printf("|%u|\n", num2);     
+// 	ft_printf("|%05u|\n", num2); 
+// 	printf("|%05u|\n", num2); 
+// 	ft_printf("|%08.10u|\n", num2); 
+// 	printf("|%08.10u|\n", num2);   
+// 	ft_printf("|%-10.2u|\n", num2); 
+// 	printf("|%-10.2u|\n", num2);
+// 	printf("-----------------------\n");
+
+// 	unsigned int hex = 255;
+// 	printf("unsigned hex x/X :\n");
+// 	printf("-----------------------\n");
+// 	ft_printf("|%x|\n", hex);
+// 	printf("|%x|\n", hex);
+// 	ft_printf("|%X|\n", hex);
+// 	printf("|%X|\n", hex);
+// 	ft_printf("|%#x|\n", hex);
+// 	printf("|%#x|\n", hex);
+// 	ft_printf("|%-#6X|\n", hex);
+// 	printf("|%-#6X|\n", hex);
+// 	ft_printf("|%#6X|\n", hex);
+// 	printf("|%#6X|\n", hex);
+// 	ft_printf("|%#010x|\n", hex);
+// 	printf("|%#010x|\n", hex);
+// }

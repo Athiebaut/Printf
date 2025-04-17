@@ -3,93 +3,80 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_ptr.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alix <alix@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: athiebau <athiebau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 13:48:34 by athiebau          #+#    #+#             */
-/*   Updated: 2023/08/01 18:49:37 by alix             ###   ########.fr       */
+/*   Updated: 2024/03/21 03:11:13 by athiebau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Inc/ft_printf.h"
 
-/**
- * @brief Calculates the number of hexadecimal digits required to represent a given pointer value.
- *
- * This function determines the size (in terms of hexadecimal digits) of the given
- * pointer value by repeatedly dividing it by 16 until the value becomes zero.
- *
- * @param nb The pointer value (as an unsigned integer of type uintptr_t) to calculate the size for.
- * @return The number of hexadecimal digits required to represent the pointer value.
- */
-static int	ptr_size(uintptr_t nb)
+int	ft_recursive_hex(t_print list, size_t n, size_t iteration)
 {
-	int	size;
+	int		count;
+	int		i;
+	char	c;
 
-	size = 0;
-	while (nb != 0)
+	count = 0;
+	if (n > 0 || (!iteration && (list.specifier != 'p' || !list.dot)))
 	{
-		size++;
-		nb = nb / 16;
-	}
-	return (size);
-}
-
-/**
- * @brief Recursively prints a pointer value in hexadecimal format.
- *
- * This function takes an unsigned integer of type `uintptr_t` and prints
- * its value in hexadecimal format. It uses recursion to break down the
- * number into its hexadecimal digits, starting from the most significant
- * digit. The digits are printed in lowercase (e.g., 'a' for 10, 'b' for 11, etc.).
- *
- * @param nb The pointer value to be printed, represented as an unsigned
- *           integer of type `uintptr_t`.
- *
- * @note This function relies on an external function `ft_put_char` to
- *       output individual characters. Ensure that `ft_put_char` is
- *       implemented and available in the same project.
- */
-static void	ft_put_ptr(uintptr_t nb)
-{
-	if (nb >= 16)
-	{
-		ft_put_ptr(nb / 16);
-		ft_put_ptr(nb % 16);
-	}
-	else
-	{
-		if (nb <= 9)
-			ft_put_char(nb + '0');
+		i = n % 16;
+		if (list.specifier != 'X')
+			c = HEXA_LOW[i];
 		else
-			ft_put_char(nb - 10 + 'a');
+			c = HEXA_UP[i];
+		n /= 16;
+		iteration = 1;
+		count += ft_recursive_hex(list, n, iteration);
+		count += ft_putnchar(c, 1);
 	}
+	return (count);
 }
 
-/**
- * ft_print_ptr - Prints a pointer address in hexadecimal format.
- * 
- * @ptr: The pointer address to be printed, passed as an unsigned integer
- *       of type uintptr_t.
- * 
- * This function prints the memory address of a pointer in a human-readable
- * hexadecimal format prefixed with "0x". If the pointer is NULL (0), it
- * prints "(nil)" instead. The function calculates and returns the total
- * number of characters printed.
- * 
- * Return: The total number of characters printed.
- */
-int	ft_print_ptr(uintptr_t ptr)
+static void	if_n_equal_zero(t_print list, int *count)
 {
-	int	printed;
+	if (!list.precision)
+		list.precision = 5;
+	if (!list.minus && list.width > list.precision)
+		*count += ft_putnchar(' ', list.width - list.precision);
+	*count += ft_putnstr("(nil)", 5);
+}
 
-	printed = 0;
-	if (ptr == 0)
-		printed = printed + ft_put_str("(nil)");
+static void	ft_print_ptr_bis(t_print l, int *count, int len, uintptr_t n)
+{
+	if (!l.minus && l.width > l.precision && !l.dot && l.zero)
+		*count += ft_putnchar('0', (l.width - l.precision));
+	else if (!l.minus && l.width > l.precision)
+		*count += ft_putnchar(' ', (l.width - l.precision));
+	*count += write(1, "0x", 2 * !l.zero);
+	*count += ft_putnchar('0', (l.precision - len) * (n != 0));
+	*count += ft_putnchar('0', l.precision * (l.dot && !n));
+	if (len)
+		*count += ft_recursive_hex(l, n, n);
+	if (l.minus && l.width > *count && l.width > l.precision)
+		*count += ft_putnchar(' ', l.width - l.precision);
+}
+
+int	ft_print_ptr(t_print l, va_list args)
+{
+	int			count;
+	uintptr_t	n;
+	int			len;
+
+	count = 0;
+	n = va_arg(args, size_t);
+	if (n == 0)
+		if_n_equal_zero(l, &count);
 	else
-	{
-		printed = printed + write(1, "0x", 2);
-		ft_put_ptr(ptr);
-		printed = printed + ptr_size(ptr);
+	{	
+		len = ft_nbrlen(n, 16);
+		len *= !(!n && !l.precision && l.dot);
+		if (l.precision < len || !l.dot)
+			l.precision = len;
+		count += write(1, "0x", 2 * l.zero);
+		l.width -= 2;
+		ft_print_ptr_bis(l, &count, len, n);
 	}
-	return (printed);
+	return (count);
 }

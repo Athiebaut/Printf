@@ -6,7 +6,7 @@ SRC =	ft_printf.c \
 	ft_print_ptr.c \
 	ft_print_hexa.c
 
-SRCS = ${addprefix Srcb/, ${SRC}}
+SRCS = ${addprefix Src/, ${SRC}}
 OBJS = ${SRCS:.c=.o}
 NAME = libftprintf.a
 LIBC = ar rcs
@@ -34,6 +34,8 @@ fclean: clean
 	${RM} ${NAMEB}
 	make fclean -C Libft
 
+bonus : fclean all
+
 re: fclean all
 
-.PHONY: all clean fclean re 
+.PHONY: all clean fclean re bonus
