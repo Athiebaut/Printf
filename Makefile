@@ -4,7 +4,8 @@ SRC =	ft_printf.c \
 	ft_print_str.c \
 	ft_print_nbrs.c \
 	ft_print_ptr.c \
-	ft_print_hexa.c
+	ft_print_hexa.c \
+	ft_printf_utils.c
 
 SRCS = ${addprefix Src/, ${SRC}}
 OBJS = ${SRCS:.c=.o}

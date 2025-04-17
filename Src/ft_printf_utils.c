@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_uitoa.c                                         :+:      :+:    :+:   */
+/*   ft_printf_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alix <alix@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 17:35:37 by athiebau          #+#    #+#             */
-/*   Updated: 2025/04/18 01:23:49 by alix             ###   ########.fr       */
+/*   Updated: 2025/04/18 01:32:50 by alix             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../Inc/ft_printf.h"
 
 /**
  * @brief Calculates the number of digits required to represent a number

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: athiebau <athiebau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alix <alix@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 11:51:38 by athiebau          #+#    #+#             */
-/*   Updated: 2024/03/21 03:22:02 by athiebau         ###   ########.fr       */
+/*   Updated: 2025/04/18 01:32:20 by alix             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,7 @@ int	ft_recursive_hex(t_print list, size_t n, size_t iteration);
 int	ft_print_ptr(t_print list, va_list args);
 
 int	ft_print_hexa(t_print list, va_list args);
+
+char	*ft_uitoa(unsigned int n);
+int	ft_nbrlen(long n, int base);
 #endif
